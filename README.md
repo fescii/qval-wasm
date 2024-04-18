@@ -13,7 +13,7 @@ To install and run this project, follow these steps:
 
 1. Clone the repository: `git clone https://github.com/fescii/qval-wasm.git`
 2. Navigate to the project directory: `cd qval-wasm`
-3. Build the project: `wasm-pack build`
+3. Build the project: `wasm-pack build --target nodejs`
 4. Run the project: add the pkg folder to your project and import the modules in your project.
 
 ## Usage
