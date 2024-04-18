@@ -40,4 +40,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-If you have any questions or suggestions, feel free to reach out to us at [isfescii@gmail.com](mailto:isfescii@gmail.com).
+If you have any questions or suggestions, feel free to reach out to me at [isfescii@gmail.com](mailto:isfescii@gmail.com).
