@@ -1,7 +1,7 @@
 ****
-# Qval :- Wasm
+# A03 Qval Wasm
+(_Rust and Wasm Project_)
 
-A03 Rust Qval
 
 ## Description
 
