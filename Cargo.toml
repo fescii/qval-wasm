@@ -3,8 +3,9 @@ name = "qval-wasm"
 version = "0.1.0"
 edition = "2021"
 author = "fescii"
-licence = "MIT"
+license = "MIT"
 repository = "https://github.com/fescii/qval-wasm"
+"description" =  "Wasm package for the qval project"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
