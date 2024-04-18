@@ -21,7 +21,10 @@ pub async fn gen_hash(secrete: &str, section: &str, key: &str) -> Hash {
 		return Hash::new(None, Some("All parameters are required".to_string()));
 	}
 
+	// Generate a random number
 	let random: u64 = rand::thread_rng().gen_range(0..100);
+
+	// Combine the secret and random number
 	let secret_and_number = format!("{}-{}", secrete, random);
 
 	// Match to create hmac instance
@@ -30,8 +33,10 @@ pub async fn gen_hash(secrete: &str, section: &str, key: &str) -> Hash {
 		Err(_) => return Hash::new(None, Some("Error creating hmac instance".to_string())),
 	};
 
+	// Update the hmac instance with the key
 	hmac.update(key.as_bytes());
 
+	// Finalize the hmac instance
 	let digested_hash = hmac.finalize().into_bytes();
 
 	// Call the function to convert the digest hash to hex
