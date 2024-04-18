@@ -1,9 +1,9 @@
 use wasm_bindgen::prelude::*;
+use wasm_bindgen::JsValue;
+use serde_wasm_bindgen::to_value;
 use rand::Rng;
 use sha2::Sha256;
 use hmac::{Hmac, Mac};
-// use wasm_bindgen_futures::JsFuture;
-// use wasm_bindgen_futures::JsFuture;
 extern crate hex;
 
 //  Import local modules
@@ -15,10 +15,11 @@ use utils::{
 
 
 #[wasm_bindgen]
-pub async fn gen_hash(secrete: &str, section: &str, key: &str) -> Hash {
+pub async fn gen_hash(secrete: &str, section: &str, key: &str) -> JsValue {
 	// Check if all parameters are provided
 	if secrete.is_empty() || section.is_empty() || key.is_empty() {
-		return Hash::new(None, Some("All parameters are required".to_string()));
+		let error = Hash::new(None, Some("All parameters are required".to_string()));
+		return to_value(&error).unwrap();
 	}
 
 	// Generate a random number
@@ -30,7 +31,10 @@ pub async fn gen_hash(secrete: &str, section: &str, key: &str) -> Hash {
 	// Match to create hmac instance
 	let mut hmac = match Hmac::<Sha256>::new_from_slice(secret_and_number.as_bytes()) {
 		Ok(hmac) => hmac,
-		Err(_) => return Hash::new(None, Some("Error creating hmac instance".to_string())),
+		Err(_) => {
+			let error = Hash::new(None, Some("Failed to create hmac instance".to_string()));
+			return to_value(&error).unwrap();
+		}
 	};
 
 	// Update the hmac instance with the key
@@ -42,5 +46,7 @@ pub async fn gen_hash(secrete: &str, section: &str, key: &str) -> Hash {
 	// Call the function to convert the digest hash to hex
 	let hash = convert_digest_to_hex(&digested_hash, section).await;
 
-	return Hash::new(Some(hash), None);
+	let hash_struct = Hash::new(Some(hash), None);
+
+	return to_value(&hash_struct).unwrap();
 }

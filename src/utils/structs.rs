@@ -1,8 +1,10 @@
 use wasm_bindgen::prelude::*;
+use serde::{Serialize, Deserialize};
 
 
 // Create a struct to hold the hash and error message
 #[wasm_bindgen]
+#[derive(Serialize, Deserialize)]
 pub struct Hash {
   hash: Option<String>,
   error: Option<String>,
