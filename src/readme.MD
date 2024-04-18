@@ -5,7 +5,7 @@ A03 Rust Qval
 
 ## Description
 
-This project aim to help qval project run processes that faster and safe execution of the code. This project is written in Rust and compiled to WebAssembly to be used in Node js.
+This project aim to help [qval](https://github.com/fescii/qval) project run processes that faster and safe execution of the code. This project is written in Rust and compiled to WebAssembly to be used in Node js.
 
 ## Installation
 
