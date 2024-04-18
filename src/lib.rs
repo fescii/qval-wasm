@@ -6,23 +6,36 @@ use hmac::{Hmac, Mac};
 // use wasm_bindgen_futures::JsFuture;
 extern crate hex;
 
+//  Import local modules
+mod utils;
+use utils::{
+	fns::convert_digest_to_hex,
+	structs::Hash
+};
+
 
 #[wasm_bindgen]
-pub async fn gen_hash(secrete: &str, section: &str, key: &str) -> String {
-    let random: u64 = rand::thread_rng().gen_range(0..100);
-    let secret_and_number = format!("{}-{}", secrete, random);
+pub async fn gen_hash(secrete: &str, section: &str, key: &str) -> Hash {
+	// Check if all parameters are provided
+	if secrete.is_empty() || section.is_empty() || key.is_empty() {
+		return Hash::new(None, Some("All parameters are required".to_string()));
+	}
 
-    let mut hmac = Hmac::<Sha256>::new_from_slice(secret_and_number.as_bytes()).expect("Failed to create HMAC");
+	let random: u64 = rand::thread_rng().gen_range(0..100);
+	let secret_and_number = format!("{}-{}", secrete, random);
 
-    hmac.update(key.as_bytes());
+	// Match to create hmac instance
+	let mut hmac = match Hmac::<Sha256>::new_from_slice(secret_and_number.as_bytes()) {
+		Ok(hmac) => hmac,
+		Err(_) => return Hash::new(None, Some("Error creating hmac instance".to_string())),
+	};
 
-    let digested_hash = hmac.finalize().into_bytes();
+	hmac.update(key.as_bytes());
 
-    match section {
-        "U" => format!("U0{}", hex::encode(&digested_hash[..10]).to_uppercase()),
-        "P" => format!("P0{}", hex::encode(&digested_hash[..14]).to_uppercase()),
-        "T" => format!("T0{}", hex::encode(&digested_hash[..10]).to_uppercase()),
-        "N" => format!("N0{}", hex::encode(&digested_hash[..14]).to_uppercase()),
-        _ => format!("R0{}", hex::encode(&digested_hash[..14]).to_uppercase()),
-    }
+	let digested_hash = hmac.finalize().into_bytes();
+
+	// Call the function to convert the digest hash to hex
+	let hash = convert_digest_to_hex(&digested_hash, section).await;
+
+	return Hash::new(Some(hash), None);
 }
